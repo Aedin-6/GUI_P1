@@ -34,7 +34,7 @@ public class Person
 
     @Override
     public String toString() {
-        return "Id: " + id + ". Osoba: " + name + " "+ surename + " Pesel: " + pesel + ". Owner status: " + isOwner;
+        return "Id: " + id + ". Osoba: " + name + " "+ surename + " Pesel: " + pesel + ". Owner status: " + (isOwner? "Owns a place.":"Doesn't own anything,");
     }
 
     void addFile()

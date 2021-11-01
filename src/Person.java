@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class Person
 {
     static int counter;
@@ -9,6 +11,8 @@ public class Person
     int bornDate;
     String address;
     boolean isOwner;
+    List<File> files;
+    List<Space> rentedList;
 
     public Person(String name, String surename, int pesel, int bornDate, String address, boolean isOwner)
     {
@@ -32,4 +36,21 @@ public class Person
     public String toString() {
         return "Id: " + id + ". Osoba: " + name + " "+ surename + " Pesel: " + pesel + ". Owner status: " + isOwner;
     }
+
+    void addFile()
+    {
+        File newFile = new File();
+        files.add(newFile);
+    }
+
+    void addPlace(Space place) //TODO: pomyslec czy to nie powinno byc w space?
+    {
+        rentedList.add(place);
+    }
+
+    void removePlace(Space place) //TODO: to tez xD
+    {
+        rentedList.remove(place);
+    }
+
 }

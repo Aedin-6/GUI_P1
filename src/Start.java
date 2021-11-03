@@ -33,6 +33,7 @@ public class Start
                     Save();
                     System.exit(1);
                 }
+                default -> throw new IllegalStateException("Unexpected value: " + option);
             }
 
         }
@@ -42,12 +43,30 @@ public class Start
         }
     }
 
-    private void PeopleInfoMenu()
+    private void PeopleInfoMenu(Scanner myScanner, List<Person> peopleList)
     {
+        System.out.println("\nAvailable options: ");
+        System.out.println(" 1. Add new person to neighbourhood.");
+        System.out.println(" 2. Remove person from neighbourhood.");
+        System.out.println(" 3. Show information about living people, their belongings.");
+        System.out.println(" 4. Save and Exit. ");
+        System.out.print(" Choose by providing number: ");
+        int option = myScanner.nextInt();
+        switch (option)
+        {
+            case 1 -> Person.AddPerson();
+            case 2 -> Person.RemovePerson();
+            case 3 -> Person.ShowInfoAboutPerson();
+            case 4 -> {
+                Save();
+                System.exit(1);
+            }
+        }
     }
 
     private void EstatesInfoMenu()
     {
+        
     }
 
     private void Save()

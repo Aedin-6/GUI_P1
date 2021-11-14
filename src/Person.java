@@ -1,56 +1,50 @@
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Person
 {
     static int counter;
     String id ="O";
-    int hashId;
     String name;
     String surename;
     int pesel;
-    int bornDate;
+    Date bornDate;
     String address;
-    boolean isOwner;
-    List<File> files;
-    List<Space> rentedList;
+    List<File> files = new ArrayList<>();
+    List<Space> rentedList = new ArrayList<>();
+    List<Item> stash = new ArrayList<>();
+    boolean isOwner = false;
 
-    public Person(String name, String surename, int pesel, int bornDate, String address, boolean isOwner)
+    public Person(String name, String surename, int pesel, Date bornDate, String address)
     {
         counter++;
-        hashId = counter;
         this.name = name;
         this.surename = surename;
         this.pesel = pesel;
         this.bornDate = bornDate;
         this.address = address;
-        this.isOwner = isOwner;
-        id = id +  hashId;
+        id = id +  counter;
     }
 
-    @Override
-    public int hashCode() {
-        return hashId;
+    public void OwnCheck()
+    {
+        isOwner = rentedList.size() > 0 || stash.size() > 0;
     }
+
 
     @Override
     public String toString() {
-        return "Id: " + id + ". Osoba: " + name + " "+ surename + " Pesel: " + pesel + ". Owner status: " + (isOwner? "Owns a place.":"Doesn't own anything,");
+        if (isOwner)
+            return "Id: " + id + ". Osoba: " + name + " "+ surename + " Pesel: " + pesel + ". Owner status: " + "Owns: " + "Apartmnets and Parking Spots: " + rentedList  + " Items: " + stash;
+        else
+            return "Id: " + id + ". Osoba: " + name + " "+ surename + " Pesel: " + pesel + ". Owner status: " + "Doesn't own anything,";
     }
 
     void addFile()
     {
         File newFile = new File();
         files.add(newFile);
-    }
-
-    void addPlace(Space place) //TODO: pomyslec czy to nie powinno byc w space?
-    {
-        rentedList.add(place);
-    }
-
-    void removePlace(Space place) //TODO: to tez xD
-    {
-        rentedList.remove(place);
     }
 
 }

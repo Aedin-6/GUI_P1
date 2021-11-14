@@ -1,20 +1,18 @@
-public class ParkingSpot extends Space
+public class ParkingSpot extends Lodging
 {
-    String id = "PS";
     static int counter;
-    public ParkingSpot(double height, double length, double width)
+
+    public ParkingSpot(double height, double length, double width, String address)
     {
-        super(height, width, length);
+        super(height, width, length, address);
         counter++;
-        id = id + counter;
+        id = "PS" + counter;
+        this.contains = 0;
     }
 
     @Override
-    public String toString() {
-        return "Miejsce parkingowe ID:" +
-                " " + id + ". O wymiarach:" +
-                " wysokosc - " + height +
-                ", szerokosc - " + width +
-                ", dlugosc - " + length;
+    public String toString()
+    {
+        return "Parking Spot ID:" + " " + id + ". Volume: " + volume() + ", Address: " + address;
     }
 }

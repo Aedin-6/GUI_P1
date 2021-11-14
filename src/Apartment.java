@@ -1,39 +1,18 @@
-import java.util.Objects;
-
-public class Apartment extends Space
+public class Apartment extends Lodging
 {
-    String id = "A";
-    int hashId;
     static int counter;
-    public Apartment(double height, double length, double width)
+
+    public Apartment(double height, double length, double width, String address)
     {
-        super(height, width, length);
+        super(height, width, length, address);
         counter++;
-        hashId = counter;
-        id = id + hashId;
+        id = "A" + counter;
+        this.contains = 0;
     }
 
     @Override
-    public String toString() {
-        return "Apartament ID:" +
-                " " + id + ". O wymiarach:" +
-                " wysokosc - " + height +
-                ", szerokosc - " + width +
-                ", dlugosc - " + length;
-    }
-
-    @Override
-    public boolean equals(Object o)
+    public String toString()
     {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Apartment apartment = (Apartment) o;
-        return Objects.equals(id, apartment.id);
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return hashId;
+        return "Apartament ID:" + " " + id + ". Volume: " + volume() + ", Address: " + address;
     }
 }

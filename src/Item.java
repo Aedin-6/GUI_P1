@@ -1,3 +1,4 @@
+import javax.sound.midi.Soundbank;
 import java.util.List;
 
 public class Item extends Space
@@ -49,5 +50,10 @@ public class Item extends Space
         {
             System.out.println(e.toString());
         }
+    }
+    public void RemoveFromStash()
+    {
+        isParkedOrStored = false;
+        System.out.println("Item successfully removed!");
     }
 }

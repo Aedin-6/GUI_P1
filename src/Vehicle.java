@@ -1,3 +1,4 @@
+import javax.sound.midi.Soundbank;
 import java.util.List;
 
 public class Vehicle extends Item
@@ -46,5 +47,12 @@ public class Vehicle extends Item
         {
             System.out.println(e.toString());
         }
+    }
+
+    @Override
+    public void RemoveFromStash()
+    {
+        isParkedOrStored = false;
+        System.out.println( "Vehicle successfully withdrawn!");
     }
 }

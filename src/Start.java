@@ -1,3 +1,6 @@
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -76,8 +79,9 @@ public class Start
         System.out.println(" 1. Show my belongings.");
         System.out.println(" 2. Park vehicle into parking spot.");
         System.out.println(" 3. Put items in parking spot or apartment");
-        System.out.println(" 4. Save and Exit. ");
-        System.out.println(" 5. Go back to main menu. ");
+        System.out.println(" 4. Remove item or car from parking spot or apartment");
+        System.out.println(" 5. Save and Exit. ");
+        System.out.println(" 6. Go back to main menu. ");
         System.out.print(" Choose by providing number: ");
 
         int option = myScanner.nextInt();
@@ -97,11 +101,62 @@ public class Start
                 BelongingsMenu();
             }
             case 4 -> {
+                RemoveItem();
+                BelongingsMenu();
+            }
+            case 5 -> {
                 Save();
                 System.exit(1);
             }
-            case 5 -> Start();
+            case 6 -> Start();
         }
+    }
+
+    private void RemoveItem()
+    {
+        System.out.println("Your belongings stored or parked:");
+        for (Item item : user.stash)
+            if (item.isParkedOrStored)
+                System.out.println(item);
+        System.out.println("\nWould you like to remove vehicle, item or return? V/I/R");
+        String choice = myScanner.nextLine();
+        switch (choice)
+        {
+            case "I" -> {
+                System.out.print("\nProvide full ID (for ex. I1) of item for removal: ");
+                String itemToRemoveID = myScanner.nextLine();
+                Item itemToRemove = RightItem(itemToRemoveID);
+                if (itemToRemove != null)
+                {
+                    itemToRemove.RemoveFromStash();
+                    BelongingsMenu();
+                } else
+                {
+                    System.out.println("No such item!");
+                    BelongingsMenu();
+                }
+            }
+            case "V" -> {
+                System.out.print("\nProvide full ID (for ex. V1) of item for removal: ");
+                String itemToRemoveID = myScanner.nextLine();
+                Item itemToRemove = RightCar(itemToRemoveID);
+                if (itemToRemove != null)
+                {
+                    itemToRemove.RemoveFromStash();
+                    BelongingsMenu();
+                } else
+                {
+                    System.out.println("No such vehicle!");
+                    BelongingsMenu();
+                }
+            }
+            case "R" -> BelongingsMenu();
+            default -> {
+                System.out.println("Type V for Vehicle, I for Item or R to return.");
+                RemoveItem();
+            }
+        }
+
     }
 
     private void ItemsIntoPs()
@@ -199,9 +254,7 @@ public class Start
         System.out.print("Provide ID: ");
         try
         {
-            int id = myScanner.nextInt();
-            myScanner.nextLine();
-            String psId = "PS" + id;
+            String psId = myScanner.nextLine();
             System.out.println("You have chosen " + psId + ".");
             System.out.println("\nChoose vehicle you wish to park in " + psId + ".\n");
             for (Item veh : user.stash)
@@ -210,10 +263,7 @@ public class Start
                     System.out.println(veh);
             }
             System.out.print("Provide ID: ");
-            int vId = myScanner.nextInt();
-            myScanner.nextLine();
-
-            String vehID = "V" + vId;
+            String vehID = myScanner.nextLine();
             Vehicle vehToPark = RightCar(vehID);
             ParkingSpot psToPark = RightSpot(psId);
             if (psToPark != null && vehToPark != null)
@@ -234,7 +284,6 @@ public class Start
         }
         catch (Exception e)
         {
-            myScanner.nextLine();
             System.out.println("\nPass only valid numbers for ID.");
             VehicleParking();
         }
@@ -845,6 +894,19 @@ public class Start
 
     private void Save()
     {
+        try
+        {
+            FileOutputStream fos = new FileOutputStream("StanAplikacji.txt");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(apartmentList);
+            oos.writeObject(peopleList);
+            oos.writeObject(parkingSpotList);
+            oos.close();
+        }
+        catch (Exception e)
+        {
+            System.out.println("Something went wrong.");
+        }
     }
 
     private Person ChoiceMenu()

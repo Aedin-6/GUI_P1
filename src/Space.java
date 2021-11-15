@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
-public abstract class Space
+public abstract class Space implements Serializable
 {
     public Person Owner;
     double height;

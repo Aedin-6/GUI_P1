@@ -61,9 +61,9 @@ public class main
         p2.stash.add(p2moto);
 
         //PRZEDMIOTY
-        Item tv = new Item("TV", 1.5, 0.2,1);
-        tv.isOwnedOrRented = true;
-        p1.stash.add(tv);
+       //Item tv = new Item("TV", 1.5, 0.2,1);
+       //tv.isOwnedOrRented = true;
+        // p1.stash.add(tv);
 
         Item wardrobe = new Item("Wardrobe", 1.0, 2.2,2);
         wardrobe.isOwnedOrRented = true;

@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.*;
 
-public class Person
+public class Person implements Serializable
 {
     static int counter;
     String id ="O";

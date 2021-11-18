@@ -1,4 +1,6 @@
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -54,6 +56,7 @@ public class Start
             System.out.println(" 4. Belongings handling menu.");
             System.out.println(" 5. Main menu. ");
             System.out.println(" 6. Save and Exit. ");
+            System.out.println(" 7. Load previous state.");
             System.out.print("Choose by providing number: ");
             int option = myScanner.nextInt();
             myScanner.nextLine();
@@ -67,6 +70,10 @@ public class Start
                 case 6 -> {
                     Save();
                     System.exit(1);
+                }
+                case 7 -> {
+                    Load();
+                    Start();
                 }
                 default -> throw new IllegalStateException("Unexpected value: " + option);
             }
@@ -915,19 +922,41 @@ public class Start
 
     private void Save()
     {
+        List<Object> stateOfApp = new ArrayList<>();
+        stateOfApp.add(peopleList);
+        stateOfApp.add(apartmentList);
+        stateOfApp.add(parkingSpotList);
         try
         {
             FileOutputStream fos = new FileOutputStream("StanAplikacji.txt");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(apartmentList);
-            oos.writeObject(peopleList);
-            oos.writeObject(parkingSpotList);
+            oos.writeObject(stateOfApp);
             oos.close();
         }
         catch (Exception e)
         {
             System.out.println("Something went wrong.");
         }
+    }
+
+    private void Load()
+    {
+        try
+        {
+            FileInputStream fis = new FileInputStream("StanAplikacji.txt");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            List<Object> stateOfApp = (List<Object>) ois.readObject();
+            peopleList = (List<Person>) stateOfApp.get(0);
+            apartmentList = (List<Space>) stateOfApp.get(1);
+            parkingSpotList = (List<Space>) stateOfApp.get(2);
+            ois.close();
+            System.out.println("Data loaded!");
+        }
+        catch (Exception e)
+        {
+            System.out.println("Something went wrong.");
+        }
+
     }
 
     private Person ChoiceMenu()

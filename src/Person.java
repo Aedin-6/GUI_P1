@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class Person
 {
@@ -11,7 +9,7 @@ public class Person
     int pesel;
     Date bornDate;
     String address;
-    List<File> files = new ArrayList<>();
+    Map<Lodging, ArrayList<File>> files = new HashMap<>();
     List<Space> rentedList = new ArrayList<>();
     List<Item> stash = new ArrayList<>();
     boolean isOwner = false;

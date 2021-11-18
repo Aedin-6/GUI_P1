@@ -1,8 +1,7 @@
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
-import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 public class Start
@@ -12,7 +11,8 @@ public class Start
     List<Space> parkingSpotList;
     Scanner myScanner;
     boolean userChosen = false;
-    Person user;
+    boolean time = false;
+    static Person user;
 
     public Start(List<Space> apartmentList, List<Person> peopleList, List<Space> parkingSpotList)
     {
@@ -40,6 +40,11 @@ public class Start
                 System.out.print("\n" + "Enter number or type 'exit': ");
                 user = ChoiceMenu();
                 userChosen = true;
+            }
+            if (!time)
+            {
+                TimeSimulation();
+                time = true;
             }
 
             System.out.println("\nAvailable options: ");
@@ -71,6 +76,16 @@ public class Start
         {
             System.out.println("Type number or 'exit'. Try again.");
         }
+    }
+
+    private void TimeSimulation()
+    {
+        TimeSim timeSim = new TimeSim();
+        TimeCheck timeCheck = new TimeCheck();
+        Thread timeSimulator = new Thread(timeSim);
+        Thread checkRent = new Thread(timeCheck);
+        checkRent.start();
+        timeSimulator.start();
     }
 
     private void BelongingsMenu()
@@ -461,6 +476,9 @@ public class Start
         user.rentedList.add(space);
         space.isOwnedOrRented = true;
         space.Owner = user;
+        ((Lodging) space).rentDate = LocalDate.now();
+        ((Lodging) space).dueDate = ((Lodging) space).rentDate.plusDays(30);
+
         user.OwnCheck();
     }
 
@@ -555,6 +573,9 @@ public class Start
         user.rentedList.remove(space);
         space.isOwnedOrRented = false;
         space.Owner = null;
+        ((Lodging) space).dueDate = null;
+        ((Lodging) space).rentDate = null;
+        user.files.clear();
         user.OwnCheck();
     }
 

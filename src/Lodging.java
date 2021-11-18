@@ -1,8 +1,11 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Lodging extends Space
 {
+    public LocalDate rentDate;
+    public LocalDate dueDate;
     List<Item> occupied = new ArrayList<>();
     String address;
     double contains;

@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Lodging extends Space
@@ -30,8 +31,52 @@ public class Lodging extends Space
             }
         }
     }
+    void KickStuff()
+    {
+        List<Item> itemClone = occupied;
+        boolean carParked = false;
+        if (itemClone.stream().anyMatch(v -> v instanceof Vehicle))
+        {
+            carParked = true;
+        }
 
+        if (!carParked)
+        {
+            itemClone.clear();
+            contains = 0;
+            if (this instanceof Apartment)
+                ((Apartment) this).livesIn.clear();
+        }
+        else
+        {
+            for (Item item : itemClone)
+            {
+                if (item instanceof Vehicle)
+                {
+                    itemClone.remove(item);
+                    contains = contains - item.volume;
+                    dueDate = TimeSim.date.plusDays(60);
+                    break;
+                }
+            }
+        }
+        occupied = itemClone;
+    }
+    void ShowRentInfo(){}
+    void ExtendRent()
+    {
+        this.dueDate = TimeSim.date.plusDays(30);
+        Start.user.files.remove(this);
+        System.out.printf("\nYou contract for %s prolonged for 30 days", this);
+    }
+    protected String SortedStuff()
+    {
+        List<Item> sorted = new ArrayList<>();
+        sorted = occupied;
 
+        sorted.sort(Comparator.comparing(Item::volume));
+        return sorted.toString();
+    }
 
     public static class TooManyThingsException extends Throwable
     {

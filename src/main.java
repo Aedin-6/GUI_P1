@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 
@@ -38,6 +39,8 @@ public class main
         ParkingSpot ps3 = new ParkingSpot(3, 3.5, 4.5, "Rozowa 32");
         a1.isOwnedOrRented = true;
         a1.Owner = p1;
+        ps1.isOwnedOrRented = true;
+        ps1.Owner = p1;
         apartmentList.add(a1);
         apartmentList.add(a2);
         apartmentList.add(a3);
@@ -46,6 +49,10 @@ public class main
         parkingSpotList.add(ps3);
         p1.rentedList.add(a1);
         p1.rentedList.add(ps1);
+        a1.rentDate = LocalDate.now();
+        a1.dueDate = a1.rentDate.plusDays(30);
+        ps1.rentDate = LocalDate.now();
+        ps1.dueDate = a1.rentDate.plusDays(30);
 
         //POJAZDY
         CityCar p1cc = new CityCar("Porsche", 2.0, 3.2, 1.3, 4,
@@ -54,6 +61,7 @@ public class main
         p1cc.Owner = p1;
         p1.stash.add(p1cc);
 
+
         Motorcycle p2moto = new Motorcycle("Harley", 1.0, 2.2, 1.3, "Chopper",
                 false, 1200);
         p2moto.isOwnedOrRented = true;
@@ -61,9 +69,9 @@ public class main
         p2.stash.add(p2moto);
 
         //PRZEDMIOTY
-       //Item tv = new Item("TV", 1.5, 0.2,1);
-       //tv.isOwnedOrRented = true;
-        // p1.stash.add(tv);
+       Item tv = new Item("TV", 1.5, 0.2,1);
+       tv.isOwnedOrRented = true;
+       p1.stash.add(tv);
 
         Item wardrobe = new Item("Wardrobe", 1.0, 2.2,2);
         wardrobe.isOwnedOrRented = true;

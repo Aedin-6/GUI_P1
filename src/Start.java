@@ -1,10 +1,9 @@
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Start
 {
@@ -32,17 +31,20 @@ public class Start
         {
             if (!userChosen)
             {
-                System.out.println("Welcome to estate management application. Choose who are you, from provided list, by press" +
+                System.out.println("Welcome to estate management application. " +
+                        "Choose who are you, from provided list, by pressing" +
                         "the right number. Type 'exit' to terminate." + '\n');
 
                 for (var person : peopleList)
                 {
                     System.out.println(person);
                 }
-                System.out.print("\n" + "Enter number or type 'exit': ");
+                System.out.print("\nEnter number or type 'exit': ");
                 user = ChoiceMenu();
                 userChosen = true;
+
             }
+
             if (!time)
             {
                 TimeSimulation();
@@ -50,13 +52,13 @@ public class Start
             }
 
             System.out.println("\nAvailable options: ");
-            System.out.println(" 1. Show information about poeple. ");
+            System.out.println(" 1. Show information about people. ");
             System.out.println(" 2. Show information about estates.");
             System.out.println(" 3. Renting menu.");
             System.out.println(" 4. Belongings handling menu.");
-            System.out.println(" 5. Main menu. ");
-            System.out.println(" 6. Save and Exit. ");
-            System.out.println(" 7. Load previous state.");
+            System.out.println(" 5. Change User. ");
+            System.out.println(" 9. Save and Exit. ");
+            //System.out.println(" 7. Load previous state.");
             System.out.print("Choose by providing number: ");
             int option = myScanner.nextInt();
             myScanner.nextLine();
@@ -66,15 +68,26 @@ public class Start
                 case 2 -> EstatesInfoMenu();
                 case 3 -> RentingMenu();
                 case 4 -> BelongingsMenu();
-                case 5 -> Start();
-                case 6 -> {
+                case 5 -> {
+                    for (var person : peopleList)
+                    {
+                        System.out.println(person);
+                    }
+                    System.out.println("\nChoose who are you, from provided list, by pressing" +
+                                    "the right number.");
+                    user = ChoiceMenu();
+                    Start();
+                }
+                case 9 -> {
                     Save();
                     System.exit(1);
                 }
-                case 7 -> {
-                    Load();
-                    Start();
-                }
+                /*
+                 case 7 -> {
+                     Load();
+                     Start();
+                 }
+                */
                 default -> throw new IllegalStateException("Unexpected value: " + option);
             }
 
@@ -151,12 +164,12 @@ public class Start
                 if (itemToRemove != null)
                 {
                     itemToRemove.RemoveFromStash();
-                    BelongingsMenu();
-                } else
+                }
+                else
                 {
                     System.out.println("No such item!");
-                    BelongingsMenu();
                 }
+                BelongingsMenu();
             }
             case "V" -> {
                 System.out.print("\nProvide full ID (for ex. V1) of item for removal: ");
@@ -165,12 +178,12 @@ public class Start
                 if (itemToRemove != null)
                 {
                     itemToRemove.RemoveFromStash();
-                    BelongingsMenu();
-                } else
+                }
+                else
                 {
                     System.out.println("No such vehicle!");
-                    BelongingsMenu();
                 }
+                BelongingsMenu();
             }
             case "R" -> BelongingsMenu();
             default -> {
@@ -190,7 +203,7 @@ public class Start
             BelongingsMenu();
         }
 
-        if (user.stash.stream().noneMatch(v -> v != null))
+        if (user.stash.isEmpty())
         {
             System.out.println("You don't own anything!");
             BelongingsMenu();
@@ -211,7 +224,7 @@ public class Start
             System.out.println("\nChoose item you wish to stash in " + id + ".\n");
             for (Item i : user.stash)
             {
-                    System.out.println(i);
+                System.out.println(i);
             }
             System.out.print("Provide full ID (for ex. I1 or I2): ");
             String iId = myScanner.nextLine();
@@ -273,7 +286,7 @@ public class Start
             if (ps instanceof ParkingSpot)
                 System.out.println(ps);
         }
-        System.out.print("Provide ID: ");
+        System.out.print("Provide full ID (ex. PS1): ");
         try
         {
             String psId = myScanner.nextLine();
@@ -284,7 +297,7 @@ public class Start
                 if (veh instanceof Vehicle)
                     System.out.println(veh);
             }
-            System.out.print("Provide ID: ");
+            System.out.print("Provide full ID (ex. V1): ");
             String vehID = myScanner.nextLine();
             Vehicle vehToPark = RightCar(vehID);
             ParkingSpot psToPark = RightSpot(psId);
@@ -306,7 +319,7 @@ public class Start
         }
         catch (Exception e)
         {
-            System.out.println("\nPass only valid numbers for ID.");
+            System.out.println("\nPass full ID.");
             VehicleParking();
         }
     }
@@ -359,8 +372,10 @@ public class Start
         System.out.println("\nAvailable options: ");
         System.out.println(" 1. Show my apartments and parking spots.");
         System.out.println(" 2. Show free apartments and parking spots.");
-        System.out.println(" 3. Save and Exit. ");
-        System.out.println(" 4. Go back to main menu. ");
+        System.out.println(" 3. Extend rent or Pay debts.");
+        System.out.println(" 4. Show bills.");
+        System.out.println(" 9. Save and Exit. ");
+        System.out.println(" 0. Go back to main menu. ");
         System.out.print(" Choose by providing number: ");
 
         int option = myScanner.nextInt();
@@ -376,15 +391,66 @@ public class Start
                 RentingMenu();
             }
             case 3 -> {
+                PayDebts();
+                RentingMenu();
+            }
+            case 4 -> {
+                ShowBills();
+                RentingMenu();
+            }
+            case 9 -> {
                 Save();
                 System.exit(1);
             }
-            case 4 -> Start();
+            case 0 -> Start();
+        }
+    }
+
+    private void ShowBills()
+    {
+        System.out.println("\n---YOUR BILLS---");
+        for(Space lodging : user.rentedList)
+        {
+            ((Lodging)lodging).ShowRentInfo();
+        }
+    }
+
+    private void PayDebts()
+    {
+
+        System.out.println("Do you want to Extend Rent or Pay Debts? er/pd");
+        String choice = myScanner.nextLine();
+        if (choice.equals("pd"))
+        {
+            user.files.clear();
+            System.out.println("\nYour debts have been paid.");
+            RentingMenu();
+        }
+        else if (choice.equals("er"))
+        {
+            for(Space estate : user.rentedList)
+                System.out.println(estate);
+            System.out.println("\nChoose which apartment or parking spot you'd like to pay rent for by providing full ID (ex. A1).");
+            choice = myScanner.nextLine();
+            Lodging payForThis = RightPlace(choice);
+            if (payForThis != null)
+                payForThis.ExtendRent();
+            else
+            {
+                System.out.println("Wrong estate. Try again.");
+                PayDebts();
+            }
+        }
+        else
+        {
+            System.out.println("Wrong choice. Try again.");
+            PayDebts();
         }
     }
 
     private void ShowFreeSpaces()
     {
+        System.out.println();
         for (Space apartment: apartmentList)
         {
             if (!apartment.isOwnedOrRented)
@@ -395,86 +461,104 @@ public class Start
             if (!parkingspot.isOwnedOrRented)
                 System.out.println(parkingspot);
         }
-        System.out.println("\n Do you want to rent one of free apartments or parking spots? y/n");
-        String ans = myScanner.nextLine();
-        if (ans.equals("y"))
+        if(user.rentedList.size() <= 5)
         {
-            System.out.println("Provide A for apartment or PS for parking spot. Next chose the right ID.");
-            ans = myScanner.nextLine();
-            if (ans.equals("A"))
+            System.out.println("\n Do you want to rent one of free apartments or parking spots? y/n");
+            String ans = myScanner.nextLine();
+            if (ans.equals("y"))
             {
-                System.out.print("Provide ID: ");
-                int id = myScanner.nextInt();
-                //myScanner.nextLine();
-                System.out.println("You have chosen " + "A" + id + " for rental.");
-                if (apartmentList.size() >= id)
+                try
                 {
-                    String ID = "A" + id;
-                    for (Space apartment : apartmentList)
+                    user.CheckProblematicTenant();
+                } catch (Person.ProblematicTenantException e)
+                {
+                    System.out.println(e);
+                    RentingMenu();
+                }
+                System.out.println("Provide A for apartment or PS for parking spot. Next choose the right ID.");
+                ans = myScanner.nextLine();
+                if (ans.equals("A"))
+                {
+                    System.out.print("Provide ID: ");
+                    int id = myScanner.nextInt();
+                    myScanner.nextLine();
+                    System.out.println("You have chosen " + "A" + id + " for rental.");
+                    if (apartmentList.size() >= id)
                     {
-                        if (((Apartment) apartment).id.equals(ID))
+                        String ID = "A" + id;
+                        for (Space apartment : apartmentList)
                         {
-                            if(!apartment.isOwnedOrRented)
+                            if (((Apartment) apartment).id.equals(ID))
                             {
-                                Rent(apartment);
-                                System.out.println(apartment + " has been successfully rented.\n");
-                            }
-                            else
-                                System.out.println("That place is already rented to "
-                                        + apartment.Owner.name + " " + apartment.Owner.surename +".\n");
+                                if (!apartment.isOwnedOrRented)
+                                {
+                                    Rent(apartment);
+                                    System.out.println(apartment + " has been successfully rented.\n");
+                                } else
+                                    System.out.println("That place is already rented to "
+                                            + apartment.Owner.name + " " + apartment.Owner.surename + ".\n");
                                 ShowFreeSpaces();
+                            }
                         }
+                    } else
+                    {
+                        System.out.print("There is no such Apartment available, choose different one.\n");
+                        ShowFreeSpaces();
                     }
                 }
-                else
+                else if (ans.equals("PS"))
                 {
-                    System.out.print("There is no such Apartment available, choose different one.\n");
-                    ShowFreeSpaces();
-                }
-            }
-            else if (ans.equals("PS"))
-            {
-                System.out.print("Provide ID: ");
-                int id = myScanner.nextInt();
-                myScanner.nextLine();
-                System.out.println("You have chosen " + "PS" + id + " for rental.");
-                if (parkingSpotList.size() >= id)
-                {
-                    String ID = "PS" + id;
-                    for (Space ps : parkingSpotList)
+                    if (user.rentedList.stream().anyMatch(a -> a instanceof Apartment))
                     {
-                        if (((ParkingSpot) ps).id.equals(ID))
+                        System.out.print("Provide ID: ");
+                        int id = myScanner.nextInt();
+                        myScanner.nextLine();
+                        System.out.println("You have chosen " + "PS" + id + " for rental.");
+                        if (parkingSpotList.size() >= id)
                         {
-                            if(!ps.isOwnedOrRented)
+                            String ID = "PS" + id;
+                            for (Space ps : parkingSpotList)
                             {
-                                Rent(ps);
-                                System.out.println(ps + " has been successfully rented.");
+                                if (((ParkingSpot) ps).id.equals(ID))
+                                {
+                                    if (!ps.isOwnedOrRented)
+                                    {
+                                        Rent(ps);
+                                        System.out.println(ps + " has been successfully rented.");
+                                    } else
+                                        System.out.println("That place is already rented to "
+                                                + ps.Owner.name + " " + ps.Owner.surename + ".");
+                                    ShowFreeSpaces();
+                                }
                             }
-                            else
-                                System.out.println("That place is already rented to "
-                                        + ps.Owner.name + " " + ps.Owner.surename +".");
+                        } else
+                        {
+                            System.out.print("There is no such Parking Spot available, choose different one.");
                             ShowFreeSpaces();
                         }
                     }
+                    else
+                    {
+                        System.out.println("To rent parking spot you need to rent apartment first.");
+                        ShowFreeSpaces();
+                    }
                 }
                 else
                 {
-                    System.out.print("There is no such Parking Spot available, choose different one.");
+                    System.out.println("Only A or PS. Try again.");
                     ShowFreeSpaces();
                 }
-            }
-            else
+            } else
             {
-                System.out.println("Only A or PS. Try again.");
-                ShowFreeSpaces();
+                System.out.println("Going back to Renting Menu.");
+                RentingMenu();
             }
         }
         else
         {
-            System.out.println("Going back to Renting Menu.");
+            System.out.println("\nYou are renting more then 5 properties already.");
             RentingMenu();
         }
-
 
     }
 
@@ -483,7 +567,7 @@ public class Start
         user.rentedList.add(space);
         space.isOwnedOrRented = true;
         space.Owner = user;
-        ((Lodging) space).rentDate = LocalDate.now();
+        ((Lodging) space).rentDate = TimeSim.date;
         ((Lodging) space).dueDate = ((Lodging) space).rentDate.plusDays(30);
 
         user.OwnCheck();
@@ -527,7 +611,7 @@ public class Start
                 else
                 {
                     System.out.print("You are not renting this Apartment, choose different one.\n");
-                    ShowFreeSpaces();
+                    ShowMySpaces();
                 }
             }
             else if (ans.equals("PS"))
@@ -578,11 +662,15 @@ public class Start
     private void Unrent(Space space)
     {
         user.rentedList.remove(space);
+        user.files.remove(space);
         space.isOwnedOrRented = false;
         space.Owner = null;
         ((Lodging) space).dueDate = null;
         ((Lodging) space).rentDate = null;
-        user.files.clear();
+        ((Lodging) space).contains = 0;
+        ((Lodging) space).occupied.clear();
+        if ((space instanceof Apartment))
+            ((Apartment) space).livesIn.clear();
         user.OwnCheck();
     }
 
@@ -592,8 +680,10 @@ public class Start
         System.out.println(" 1. Add new person to neighbourhood.");
         System.out.println(" 2. Remove person from neighbourhood.");
         System.out.println(" 3. Show information about living people and their belongings.");
-        System.out.println(" 4. Save and Exit. ");
-        System.out.println(" 5. Go back to main menu. ");
+        System.out.println(" 4. Assign to apartment.");
+        System.out.println(" 5. Remove from apartment.");
+        System.out.println(" 9. Save and Exit. ");
+        System.out.println(" 0. Go back to main menu. ");
         System.out.print(" Choose by providing number: ");
         int option = myScanner.nextInt();
         myScanner.nextLine();
@@ -602,8 +692,7 @@ public class Start
             case 1 ->
                     {
                         peopleList.add(AddPerson());
-                        System.out.println();
-                        System.out.println("---Person added---");
+                        System.out.println("\n---Person added---");
                         PeopleInfoMenu();
                     }
             case 2 -> RemovePerson();
@@ -611,13 +700,132 @@ public class Start
                 ShowPeopleInfo();
                 PeopleInfoMenu();
             }
-            case 4 ->
+            case 4 -> AssignToApartment();
+            case 5 -> RemoveFromApartment();
+            case 9 ->
                     {
                         Save();
                         System.exit(1);
                     }
-            case 5 -> Start();
+            case 0 -> Start();
         }
+    }
+
+    private void RemoveFromApartment()
+    {
+        Apartment apartment = null;
+        Person per = null;
+
+        for (Space estate : user.rentedList)
+            if (estate instanceof Apartment)
+                System.out.println(estate);
+        try
+        {
+            System.out.println("\nIf you want to remove person from estate provide full ID (ex.A1) or 'exit' to leave: ");
+            String choice = myScanner.nextLine();
+            for (Space estate : user.rentedList)
+            {
+                if (choice.equals("exit"))
+                    PeopleInfoMenu();
+                else
+                    apartment = (Apartment) RightPlace(choice);
+            }
+            if(apartment != null && user.rentedList.contains(apartment) && apartment.livesIn.size() > 0)
+            {
+                for (Person person : apartment.livesIn)
+                    System.out.println(person);
+            }
+            else
+            {
+                System.out.println("This apartment doesn't exist or you are not renting it or nobody lives there. Try again");
+                RemoveFromApartment();
+            }
+
+            System.out.println("\nProvide full person ID (ex.O1) or 'exit' to leave: ");
+            choice = myScanner.nextLine();
+            for (Person person : peopleList)
+            {
+                if (choice.equals("exit"))
+                    PeopleInfoMenu();
+                else
+                    per = RightPerson(choice);
+            }
+            if (per != null && apartment.livesIn.contains(per))
+            {
+                apartment.livesIn.remove(per);
+                System.out.println(per.name +" "+ per.surename + " removed from " + apartment);
+                RentingMenu();
+            }
+            else
+            {
+                System.out.println("Wrong person. Try again.");
+                RemoveFromApartment();
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println("Something went wrong. Try again");
+            AssignToApartment();
+        }
+    }
+
+    private void AssignToApartment()
+    {
+        Apartment apartment = null;
+        Person per = null;
+        for (Person person : peopleList)
+                System.out.println(person);
+        for (Space estate : user.rentedList)
+            if (estate instanceof Apartment)
+                System.out.println(estate);
+         try
+         {
+             System.out.println("\nIf you want to assign person to estate provide full ID (ex.A1) or 'exit' to leave: ");
+             String choice = myScanner.nextLine();
+             for (Space estate : user.rentedList)
+             {
+                 if (choice.equals("exit"))
+                     PeopleInfoMenu();
+                 else
+                     apartment = (Apartment) RightPlace(choice);
+             }
+             System.out.println("\nProvide full person ID (ex.O1) or 'exit' to leave: ");
+             choice = myScanner.nextLine();
+             for (Person person : peopleList)
+             {
+                 if (choice.equals("exit"))
+                     RentingMenu();
+                 else
+                     per = RightPerson(choice);
+             }
+             if (per != null && apartment != null)
+             {
+                 apartment.livesIn.add(per);
+                 System.out.println(per.name +" "+ per.surename + " assigned to " + apartment);
+                 PeopleInfoMenu();
+             }
+             else
+             {
+                 System.out.println("Wrong person or apartment. Try again.");
+                 AssignToApartment();
+             }
+         }
+         catch (Exception e)
+         {
+             System.out.println("Something went wrong. Try again");
+             AssignToApartment();
+         }
+    }
+
+    private Person RightPerson(String choice)
+    {
+        Person ps = null;
+        for (Person pers : peopleList)
+        {
+            if(pers.id.equals(choice))
+                ps = pers;
+        }
+        return ps;
     }
 
     private void ShowPeopleInfo()
@@ -657,14 +865,13 @@ public class Start
                     {
                         peopleList.remove(toRemove);
                         System.out.println("Person removed.");
-                        rightNumber = false;
-                        PeopleInfoMenu();
-                    } else
+                    }
+                    else
                     {
                         System.out.println("Going back to People Menu.");
-                        rightNumber = false;
-                        PeopleInfoMenu();
                     }
+                    rightNumber = false;
+                    PeopleInfoMenu();
                 }
                 else
                 {
@@ -693,13 +900,10 @@ public class Start
         int pesel = Pesel();
         Date bdate = Dayofbirth();
         System.out.println("Provide address: ");
-        String adaress = myScanner.nextLine();
+        String address = myScanner.nextLine();
 
-
-
-        return new Person(name,surname,pesel, bdate,adaress);
+        return new Person(name, surname, pesel, bdate, address);
     }
-
     private int Pesel()
     {
         try
@@ -746,8 +950,8 @@ public class Start
         System.out.println(" 1. Add new estate.");
         System.out.println(" 2. Remove estate.");
         System.out.println(" 3. Show information about estates.");
-        System.out.println(" 4. Save and Exit. ");
-        System.out.println(" 5. Go back to main menu. ");
+        System.out.println(" 9. Save and Exit. ");
+        System.out.println(" 0. Go back to main menu. ");
         System.out.print(" Choose by providing number: ");
         int option = myScanner.nextInt();
         myScanner.nextLine();
@@ -773,11 +977,11 @@ public class Start
                 ShowEstatesInfo();
                 EstatesInfoMenu();
             }
-            case 4 -> {
+            case 9 -> {
                 Save();
                 System.exit(1);
             }
-            case 5 -> Start();
+            case 0 -> Start();
         }
     }
 
@@ -878,14 +1082,13 @@ public class Start
                         {
                             list.remove(toRemove);
                             System.out.println("Apartment removed.");
-                            rightNumber = false;
-                            EstatesInfoMenu();
-                        } else
+                        }
+                        else
                         {
                             System.out.println("Going back to Estates Menu.");
-                            rightNumber = false;
-                            EstatesInfoMenu();
                         }
+                        rightNumber = false;
+                        EstatesInfoMenu();
 
                     }
                     else if (toRemove instanceof ParkingSpot)
@@ -897,14 +1100,13 @@ public class Start
                         {
                             list.remove(toRemove);
                             System.out.println("Apartment removed.");
-                            rightNumber = false;
-                            EstatesInfoMenu();
-                        } else
+                        }
+                        else
                         {
                             System.out.println("Going back to Estates Menu.");
-                            rightNumber = false;
-                            EstatesInfoMenu();
                         }
+                        rightNumber = false;
+                        EstatesInfoMenu();
                     }
                 }
                 else
@@ -922,16 +1124,17 @@ public class Start
 
     private void Save()
     {
-        List<Object> stateOfApp = new ArrayList<>();
-        stateOfApp.add(peopleList);
-        stateOfApp.add(apartmentList);
-        stateOfApp.add(parkingSpotList);
+        List<Space> lodgingList = Stream.concat(apartmentList.stream(), parkingSpotList.stream())
+                .sorted(Comparator.comparing(Space::volume)).collect(Collectors.toList());
         try
         {
-            FileOutputStream fos = new FileOutputStream("StanAplikacji.txt");
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(stateOfApp);
-            oos.close();
+            Writer fw = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream("StanAplikacji.txt"), StandardCharsets.UTF_8));
+            for(var person : peopleList)
+                    fw.write(person.toString() + "\n");
+            for(var lodg : lodgingList)
+                fw.write(lodg.toString() + "\n");
+            fw.close();
         }
         catch (Exception e)
         {
@@ -939,7 +1142,9 @@ public class Start
         }
     }
 
-    private void Load()
+/*
+    private void Load() //Nie używana metoda, ale potrzebna w razie korzystania z funkcji zapisu
+                        //obiektu z możliwością przywracania stanu.
     {
         try
         {
@@ -958,6 +1163,8 @@ public class Start
         }
 
     }
+
+ */
 
     private Person ChoiceMenu()
     {

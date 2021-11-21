@@ -25,6 +25,4 @@ public abstract class Space implements Serializable
         this.length = length;
         volume = volume();
     }
-
-
 }

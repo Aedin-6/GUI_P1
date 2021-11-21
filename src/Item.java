@@ -1,4 +1,5 @@
 import javax.sound.midi.Soundbank;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Item extends Space
@@ -18,6 +19,11 @@ public class Item extends Space
     }
 
     double Volume() { return height*length*width; }
+
+    public String getName()
+    {
+        return name;
+    }
 
     @Override
     public String toString()
@@ -56,4 +62,5 @@ public class Item extends Space
         isParkedOrStored = false;
         System.out.println("Item successfully removed!");
     }
+
 }

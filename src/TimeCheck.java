@@ -1,6 +1,9 @@
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.List;
 
 import static java.lang.Thread.sleep;
 
@@ -30,22 +33,34 @@ public class TimeCheck implements Runnable
             }
     }
 
-    private void RentCheck()
+    private synchronized void RentCheck()
     {
-        for (Space estate : Start.user.rentedList)
+        List<Space> rentClone = Start.user.rentedList;
+        try
         {
-            if (((Lodging) estate).dueDate != null)
+            for (Space estate : rentClone)
             {
-                LocalDate check = ((Lodging) estate).dueDate;
-                if (TimeSim.date.isAfter(check) || TimeSim.date.isEqual(check))
+                if (((Lodging) estate).dueDate != null)
                 {
-                    File file = new File();
-                    ArrayList<File> fileList = null;
-                    fileList.add(file);
-                    Start.user.files.put((Lodging) estate, fileList);
-                    System.out.println("File issued.");
+                    LocalDate check = ((Lodging) estate).dueDate;
+                    if (TimeSim.date.isAfter(check) || TimeSim.date.isEqual(check))
+                    {
+                        Start.user.addFile((Lodging) estate);
+                        System.out.printf("\n---File issued for %s---", estate);
+                        long daysBetween = ChronoUnit.DAYS.between(check, TimeSim.date);
+                        if (daysBetween > 2)
+                        {
+                            System.out.printf("\n---BECAUSE OF NOT PAID RENT %s IS CLEARED AND YOU ARE NOT LONGER OWNER OF THAT PLACE.---%n", ((Lodging) estate).id);
+                            ((Lodging) estate).KickStuff();
+                            rentClone.remove(estate);
+                            estate.isOwnedOrRented = false;
+                            Start.user.OwnCheck();
+                            Start.user.rentedList = rentClone;
+                        }
+                    }
                 }
             }
         }
+        catch (ConcurrentModificationException ignored){ }
     }
 }

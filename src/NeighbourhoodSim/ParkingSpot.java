@@ -1,8 +1,10 @@
+package NeighbourhoodSim;
+
 import java.time.format.DateTimeFormatter;
 
 public class ParkingSpot extends Lodging
 {
-    static int counter;
+    protected static int counter;
 
     public ParkingSpot(double height, double length, double width, String address)
     {

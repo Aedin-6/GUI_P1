@@ -1,11 +1,12 @@
-import javax.sound.midi.Soundbank;
+package NeighbourhoodSim;
+
 import java.util.List;
 
 public class Vehicle extends Item
 {
-    int enginceCapacity;
+    private int enginceCapacity;
     //String id = "V";
-    static int counter;
+    protected static int counter;
 
     public Vehicle(String name, double width, double length, double height, int enginceCapacity)
     {
@@ -18,7 +19,7 @@ public class Vehicle extends Item
     @Override
     public String toString()
     {
-        return id + " Vehicle: " + name +", volume: " + volume +
+        return id + " NeighbourhoodSim.Vehicle: " + name +", volume: " + volume +
                 ", engine capacity: " + enginceCapacity;
     }
 
@@ -39,7 +40,7 @@ public class Vehicle extends Item
                     psToPark.contains = +this.volume;
                     psToPark.occupied.add(this);
                     isParkedOrStored = true;
-                    System.out.println("\nVehicle parked.");
+                    System.out.println("\nNeighbourhoodSim.Vehicle parked.");
                 }
             }
         }
@@ -53,6 +54,6 @@ public class Vehicle extends Item
     public void RemoveFromStash()
     {
         isParkedOrStored = false;
-        System.out.println( "Vehicle successfully withdrawn!");
+        System.out.println( "NeighbourhoodSim.Vehicle successfully withdrawn!");
     }
 }

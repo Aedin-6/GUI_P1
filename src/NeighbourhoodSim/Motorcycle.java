@@ -1,3 +1,5 @@
+package NeighbourhoodSim;
+
 public class Motorcycle extends Vehicle
 {
     boolean isTricycle;

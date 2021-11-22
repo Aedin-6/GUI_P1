@@ -1,7 +1,9 @@
+package NeighbourhoodSim;
+
 public class OffroadCar extends Vehicle
 {
-    String engineType;
-    boolean isPickUp;
+    protected String engineType;
+    protected boolean isPickUp;
     public OffroadCar(String name, double width, double length, double height, String engineType, boolean isPickUp,
                       int engineCap)
     {

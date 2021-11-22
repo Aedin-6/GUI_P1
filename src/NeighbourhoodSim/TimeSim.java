@@ -1,3 +1,5 @@
+package NeighbourhoodSim;
+
 import java.time.LocalDate;
 import static java.lang.Thread.sleep;
 
@@ -14,7 +16,7 @@ public class TimeSim implements Runnable
         }
         catch (InterruptedException e)
         {
-            System.out.println("Something interrupted the date.");;
+            System.out.println("Something interrupted the date.");
         }
     }
 

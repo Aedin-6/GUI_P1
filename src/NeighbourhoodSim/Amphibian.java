@@ -1,7 +1,9 @@
+package NeighbourhoodSim;
+
 public class Amphibian extends Vehicle
 {
-    double displacement;
-    boolean wheels;
+    protected double displacement;
+    protected boolean wheels;
 
     public Amphibian(String name, double width, double length, double height, double displacement, int engineCap, boolean wheels)
     {

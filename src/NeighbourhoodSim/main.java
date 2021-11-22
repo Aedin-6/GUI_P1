@@ -1,8 +1,5 @@
-import java.awt.*;
-import java.lang.invoke.StringConcatFactory;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.SQLOutput;
+package NeighbourhoodSim;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -13,6 +10,7 @@ public class main
 {
     public static void main(String[] args)
     {
+
         List<Space> apartmentList = new ArrayList<>();
         List<Person> peopleList = new ArrayList<>();
         List<Space> parkingSpotList = new ArrayList<>();
@@ -69,9 +67,9 @@ public class main
         p2.stash.add(p2moto);
 
         //PRZEDMIOTY
-       Item tv = new Item("TV", 1.5, 0.2,1);
-       tv.isOwnedOrRented = true;
-       p1.stash.add(tv);
+        Item tv = new Item("TV", 1.5, 0.2,1);
+        tv.isOwnedOrRented = true;
+        p1.stash.add(tv);
 
         Item wardrobe = new Item("Wardrobe", 1.0, 2.2,2);
         wardrobe.isOwnedOrRented = true;

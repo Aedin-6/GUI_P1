@@ -1,19 +1,21 @@
+package NeighbourhoodSim;
+
 import java.io.Serializable;
 import java.util.*;
 
 public class Person implements Serializable
 {
-    static int counter;
-    String id ="O";
-    String name;
-    String surename;
-    int pesel;
-    Date bornDate;
-    String address;
-    Map<Lodging, ArrayList<File>> files = new HashMap<>();
-    List<Space> rentedList = new ArrayList<>();
-    List<Item> stash = new ArrayList<>();
-    boolean isOwner = false;
+    protected static int counter;
+    protected String id ="O";
+    protected String name;
+    protected String surename;
+    private int pesel;
+    protected Date bornDate;
+    private String address;
+    protected Map<Lodging, ArrayList<File>> files = new HashMap<>();
+    protected List<Space> rentedList = new ArrayList<>();
+    protected List<Item> stash = new ArrayList<>();
+    private boolean isOwner = false;
 
     public Person(String name, String surename, int pesel, Date bornDate, String address)
     {
@@ -41,7 +43,7 @@ public class Person implements Serializable
     }
 
 
-    public void addFile(Lodging space)
+    protected void addFile(Lodging space)
     {
         File newFile = new File();
         ArrayList<File> rightSpace = files.get(space);
@@ -64,7 +66,7 @@ public class Person implements Serializable
         return sorted.toString();
     }
 
-    public void CheckProblematicTenant() throws ProblematicTenantException
+    protected void CheckProblematicTenant() throws ProblematicTenantException
     {
         int countFiles = 0;
         for (Map.Entry<Lodging, ArrayList<File>> entry : files.entrySet())

@@ -1,10 +1,8 @@
-import jdk.internal.icu.text.UnicodeSet;
+package NeighbourhoodSim;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.SortedMap;
 
 public class Apartment extends Lodging
 {
@@ -31,7 +29,7 @@ public class Apartment extends Lodging
     @Override
     void ShowRentInfo()
     {
-        System.out.println("Apartment ID: " +  this.id + " is rented from "
+        System.out.println("NeighbourhoodSim.Apartment ID: " +  this.id + " is rented from "
                 + this.rentDate.format((DateTimeFormatter.ofPattern("dd/MM/yyyy"))) + " until "
         + this.dueDate.format((DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
     }

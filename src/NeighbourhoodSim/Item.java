@@ -1,13 +1,13 @@
-import javax.sound.midi.Soundbank;
-import java.time.format.DateTimeFormatter;
+package NeighbourhoodSim;
+
 import java.util.List;
 
 public class Item extends Space
 {
-    String name;
-    boolean isParkedOrStored = false;
-    String id = "I";
-    static int counter;
+    protected String name;
+    protected boolean isParkedOrStored = false;
+    protected String id = "I";
+    private static int counter;
 
     public Item(String name, double width, double length, double height)
     {
@@ -48,7 +48,7 @@ public class Item extends Space
                     placeToStore.contains = +this.volume;
                     placeToStore.occupied.add(this);
                     isParkedOrStored = true;
-                    System.out.println("\nItem stored.");
+                    System.out.println("\nNeighbourhoodSim.Item stored.");
                 }
             }
         }
@@ -60,7 +60,7 @@ public class Item extends Space
     public void RemoveFromStash()
     {
         isParkedOrStored = false;
-        System.out.println("Item successfully removed!");
+        System.out.println("NeighbourhoodSim.Item successfully removed!");
     }
 
 }

@@ -1,16 +1,18 @@
+package NeighbourhoodSim;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Lodging extends Space
+public class Lodging extends Space implements Renting
 {
-    public LocalDate rentDate;
-    public LocalDate dueDate;
-    List<Item> occupied = new ArrayList<>();
-    String address;
-    double contains;
-    String id;
+    protected LocalDate rentDate;
+    protected LocalDate dueDate;
+    protected List<Item> occupied = new ArrayList<>();
+    protected String address;
+    protected double contains;
+    protected String id;
 
     public Lodging(double height, double width, double length, String address)
     {
@@ -69,13 +71,42 @@ public class Lodging extends Space
         Start.user.files.remove(this);
         System.out.printf("\nYou contract for %s prolonged for 30 days", this);
     }
-    protected String SortedStuff()
+    String SortedStuff()
     {
-        List<Item> sorted = new ArrayList<>();
+        List<Item> sorted;
         sorted = occupied;
 
         sorted.sort(Comparator.comparing(Item::volume));
         return sorted.toString();
+    }
+
+    @Override
+    public void Rent()
+    {
+        Start.user.rentedList.add(this);
+        this.isOwnedOrRented = true;
+        this.Owner = Start.user;
+        this.rentDate = TimeSim.date;
+        this.dueDate = this.rentDate.plusDays(30);
+
+        Start.user.OwnCheck();
+    }
+
+    @Override
+    public void Unrent()
+    {
+        Start.user.rentedList.remove(this);
+        Start.user.files.remove(this);
+        this.isOwnedOrRented = false;
+        this.Owner = null;
+        this.dueDate = null;
+        this.rentDate = null;
+        this.contains = 0;
+        this.occupied.clear();
+        if ((this instanceof Apartment))
+            ((Apartment) this).livesIn.clear();
+        Start.user.OwnCheck();
+
     }
 
     public static class TooManyThingsException extends Throwable

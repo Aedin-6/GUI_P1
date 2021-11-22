@@ -1,7 +1,10 @@
+package NeighbourhoodSim;
+
 public class CityCar extends Vehicle
 {
-    int numberOfDoors;
-    String engineType;
+    protected int numberOfDoors;
+    protected String engineType;
+
     public CityCar(String name, double width, double length, double height, int numberOfDoors, String engineType,
                    int engineCap)
     {

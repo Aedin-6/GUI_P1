@@ -9,8 +9,6 @@ import static java.lang.Thread.sleep;
 
 public class TimeCheck implements Runnable
 {
-    LocalDate date = LocalDate.now();
-
     @Override
     public void run()
     {

@@ -14,7 +14,7 @@ public abstract class Space implements Serializable
     protected double volume;
 
 
-    protected  double volume()
+    protected double volume()
     {
         double vol = height*length*width;
         return new BigDecimal(Double.toString(vol)).setScale(2, RoundingMode.HALF_UP).doubleValue();

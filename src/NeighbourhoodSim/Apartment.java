@@ -6,8 +6,8 @@ import java.util.List;
 
 public class Apartment extends Lodging
 {
-    static int counter;
-    public List<Person> livesIn = new ArrayList<>();
+    protected static int counter;
+    protected List<Person> livesIn = new ArrayList<>();
 
     public Apartment(double height, double length, double width, String address)
     {
@@ -20,14 +20,14 @@ public class Apartment extends Lodging
     @Override
     public String toString()
     {
-        return "Apartament ID:" + " " + id + ". Volume: " + volume() + ", Address: " + address
+        return "Apartment ID:" + " " + id + ". Volume: " + volume() + ", Address: " + address
                 + " Contains: " + SortedStuff();
     }
 
 
 
     @Override
-    void ShowRentInfo()
+    protected void ShowRentInfo()
     {
         System.out.println("NeighbourhoodSim.Apartment ID: " +  this.id + " is rented from "
                 + this.rentDate.format((DateTimeFormatter.ofPattern("dd/MM/yyyy"))) + " until "

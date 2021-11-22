@@ -21,7 +21,7 @@ public class ParkingSpot extends Lodging
                 + " Contains: " + SortedStuff();
     }
     @Override
-    void ShowRentInfo()
+    protected void ShowRentInfo()
     {
         System.out.println("Parking Spot ID: " +  this.id + " is rented from "
                 + this.rentDate.format((DateTimeFormatter.ofPattern("dd/MM/yyyy"))) + " until "

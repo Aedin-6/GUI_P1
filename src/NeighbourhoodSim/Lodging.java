@@ -19,7 +19,7 @@ public class Lodging extends Space implements Renting
         super(height, width, length);
         this.address = address;
     }
-    public void Overloaded() throws TooManyThingsException
+    protected void Overloaded() throws TooManyThingsException
     {
         if (occupied != null)
         {
@@ -33,7 +33,7 @@ public class Lodging extends Space implements Renting
             }
         }
     }
-    void KickStuff()
+    protected void KickStuff()
     {
         List<Item> itemClone = occupied;
         boolean carParked = false;
@@ -64,14 +64,14 @@ public class Lodging extends Space implements Renting
         }
         occupied = itemClone;
     }
-    void ShowRentInfo(){}
-    void ExtendRent()
+    protected void ShowRentInfo(){}
+    protected void ExtendRent()
     {
         this.dueDate = TimeSim.date.plusDays(30);
         Start.user.files.remove(this);
         System.out.printf("\nYou contract for %s prolonged for 30 days", this);
     }
-    String SortedStuff()
+    protected String SortedStuff()
     {
         List<Item> sorted;
         sorted = occupied;
@@ -88,7 +88,9 @@ public class Lodging extends Space implements Renting
         this.Owner = Start.user;
         this.rentDate = TimeSim.date;
         this.dueDate = this.rentDate.plusDays(30);
-
+        if (Start.user.address == null)
+            if(this instanceof Apartment)
+                Start.user.address = this.address;
         Start.user.OwnCheck();
     }
 
@@ -104,7 +106,23 @@ public class Lodging extends Space implements Renting
         this.contains = 0;
         this.occupied.clear();
         if ((this instanceof Apartment))
+        {
             ((Apartment) this).livesIn.clear();
+            if (Start.user.address.equals(this.address))
+            {
+                if(Start.user.rentedList != null)
+                    for (Space estates : Start.user.rentedList)
+                    {
+                        if (estates instanceof Apartment)
+                        {
+                            Start.user.address = ((Apartment) estates).address;
+                            break;
+                        }
+                    }
+                else
+                    Start.user.address = null;
+            }
+        }
         Start.user.OwnCheck();
 
     }

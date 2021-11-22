@@ -1,17 +1,14 @@
 package NeighbourhoodSim;
 
-import java.util.List;
-
 public class Vehicle extends Item
 {
-    private int enginceCapacity;
-    //String id = "V";
+    private int engineCapacity;
     protected static int counter;
 
-    public Vehicle(String name, double width, double length, double height, int enginceCapacity)
+    public Vehicle(String name, double width, double length, double height, int engineCapacity)
     {
         super(name, width, length, height);
-        this.enginceCapacity = enginceCapacity;
+        this.engineCapacity = engineCapacity;
         counter++;
         id = "V" + counter;
     }
@@ -19,41 +16,14 @@ public class Vehicle extends Item
     @Override
     public String toString()
     {
-        return id + " NeighbourhoodSim.Vehicle: " + name +", volume: " + volume +
-                ", engine capacity: " + enginceCapacity;
-    }
-
-    public void Park(ParkingSpot psToPark, List<Space> ownedSpaces)
-    {
-        try
-        {
-            psToPark.Overloaded();
-            if (psToPark.contains <= this.volume)
-            {
-                if (((psToPark.contains = +this.volume) < this.volume))
-                {
-                    System.out.println("\n");
-                    throw new Lodging.TooManyThingsException("This item is too big!");
-                }
-                else
-                {
-                    psToPark.contains = +this.volume;
-                    psToPark.occupied.add(this);
-                    isParkedOrStored = true;
-                    System.out.println("\nNeighbourhoodSim.Vehicle parked.");
-                }
-            }
-        }
-        catch (Lodging.TooManyThingsException e)
-        {
-            System.out.println(e.toString());
-        }
+        return id + " Vehicle: " + name +", volume: " + volume +
+                ", engine capacity: " + engineCapacity;
     }
 
     @Override
     public void RemoveFromStash()
     {
         isParkedOrStored = false;
-        System.out.println( "NeighbourhoodSim.Vehicle successfully withdrawn!");
+        System.out.println( "Vehicle successfully withdrawn!");
     }
 }

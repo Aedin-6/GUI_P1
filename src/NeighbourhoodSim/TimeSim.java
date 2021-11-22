@@ -12,7 +12,7 @@ public class TimeSim implements Runnable
     {
         try
         {
-            TimeIncrese();
+            TimeIncrease();
         }
         catch (InterruptedException e)
         {
@@ -20,7 +20,7 @@ public class TimeSim implements Runnable
         }
     }
 
-    private synchronized void TimeIncrese() throws InterruptedException
+    private synchronized void TimeIncrease() throws InterruptedException
     {
             for (int i = 0; i < Integer.MAX_VALUE; i++)
             {

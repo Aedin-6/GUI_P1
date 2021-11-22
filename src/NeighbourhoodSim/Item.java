@@ -1,7 +1,5 @@
 package NeighbourhoodSim;
 
-import java.util.List;
-
 public class Item extends Space
 {
     protected String name;
@@ -18,8 +16,6 @@ public class Item extends Space
 
     }
 
-    double Volume() { return height*length*width; }
-
     public String getName()
     {
         return name;
@@ -28,10 +24,10 @@ public class Item extends Space
     @Override
     public String toString()
     {
-        return "ID: " + id + ", Name: " + name + ", Voulme: " + volume;
+        return "ID: " + id + ", Name: " + name + ", Volume: " + volume;
     }
 
-    public void Park(Lodging placeToStore, List<Space> ownedSpaces)
+    public void Park(Lodging placeToStore)
     {
         try
         {
@@ -45,10 +41,24 @@ public class Item extends Space
                 }
                 else
                 {
-                    placeToStore.contains = +this.volume;
-                    placeToStore.occupied.add(this);
-                    isParkedOrStored = true;
-                    System.out.println("\nNeighbourhoodSim.Item stored.");
+                    if (this instanceof Vehicle && placeToStore instanceof ParkingSpot)
+                    {
+                        placeToStore.contains = +this.volume;
+                        placeToStore.occupied.add(this);
+                        isParkedOrStored = true;
+                        System.out.println("\nVehicle parked.");
+                    }
+                    else if (this instanceof Vehicle && !(placeToStore instanceof Apartment))
+                    {
+                        throw new IllegalArgumentException("You cannot park car in apartment!");
+                    }
+                    else
+                    {
+                        placeToStore.contains = +this.volume;
+                        placeToStore.occupied.add(this);
+                        isParkedOrStored = true;
+                        System.out.println("\nItem stored.");
+                    }
                 }
             }
         }
@@ -60,7 +70,7 @@ public class Item extends Space
     public void RemoveFromStash()
     {
         isParkedOrStored = false;
-        System.out.println("NeighbourhoodSim.Item successfully removed!");
+        System.out.println("Item successfully removed!");
     }
 
 }

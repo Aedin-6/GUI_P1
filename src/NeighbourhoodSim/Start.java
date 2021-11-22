@@ -233,8 +233,8 @@ public class Start
         System.out.println(" 2. Park vehicle into parking spot.");
         System.out.println(" 3. Put items in parking spot or apartment");
         System.out.println(" 4. Remove item or car from parking spot or apartment");
-        System.out.println(" 5. Save and Exit. ");
-        System.out.println(" 6. Go back to Main Menu ");
+        System.out.println(" 9. Save and Exit. ");
+        System.out.println(" 0. Go back to Main Menu ");
         System.out.print(" Choose by providing number: ");
 
         int option = myScanner.nextInt();
@@ -257,11 +257,11 @@ public class Start
                 RemoveItem();
                 BelongingsMenu();
             }
-            case 5 -> {
+            case 9 -> {
                 Save();
                 System.exit(1);
             }
-            case 6 -> Start();
+            case 0 -> Start();
         }
     }
 
@@ -277,12 +277,10 @@ public class Start
         String surname = myScanner.nextLine();
 
         System.out.println("Provide PESEL: ");
-        int pesel = Pesel();
         Date bdate = Dayofbirth();
-        System.out.println("Provide address: ");
-        String address = myScanner.nextLine();
+        long pesel = Pesel();
 
-        return new Person(name, surname, pesel, bdate, address);
+        return new Person(name, surname, pesel, bdate);
     }
     private void RemovePerson()
     {
@@ -866,7 +864,7 @@ public class Start
             ParkingSpot psToPark = RightSpot(psId);
             if (psToPark != null && vehToPark != null)
                 if(!vehToPark.isParkedOrStored)
-                    vehToPark.Park(psToPark, user.rentedList);
+                    vehToPark.Park(psToPark);
                 else
                     System.out.println("Vehicle already parked.");
             else if (psToPark == null)
@@ -924,7 +922,7 @@ public class Start
             Lodging placeToStore = RightPlace(id);
             if (placeToStore != null && itemToStore != null)
                 if(!itemToStore.isParkedOrStored)
-                    itemToStore.Park(placeToStore, user.rentedList);
+                    itemToStore.Park(placeToStore);
                 else
                     System.out.println("Item is already stored.");
             else if (placeToStore == null)
@@ -1047,18 +1045,18 @@ public class Start
         }
         return ps;
     }
-    private int Pesel()
+    private long Pesel()
     {
         try
         {
-            int pesel = myScanner.nextInt();
+            long pesel = myScanner.nextLong();
             myScanner.nextLine();
             return pesel;
         }
         catch (InputMismatchException e)
         {
             myScanner.nextLine();
-            System.out.println("PESEL must be an Integer. Try again");
+            System.out.println("PESEL must be a number. Try again");
             Pesel();
         }
         return 0;

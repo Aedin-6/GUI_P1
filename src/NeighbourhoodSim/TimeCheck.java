@@ -46,7 +46,7 @@ public class TimeCheck implements Runnable
                     if (TimeSim.date.isAfter(check) || TimeSim.date.isEqual(check))
                     {
                         Start.user.addFile((Lodging) estate);
-                        System.out.printf("\n---NeighbourhoodSim.File issued for %s---", estate);
+                        System.out.printf("\n---File issued for %s---", estate);
                         long daysBetween = ChronoUnit.DAYS.between(check, TimeSim.date);
                         if (daysBetween > 2)
                         {

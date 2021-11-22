@@ -43,7 +43,7 @@ public class Person implements Serializable
     }
 
 
-    protected void addFile(Lodging space)
+    protected void addFile(Lodging space) //TODO: DO FILE
     {
         File newFile = new File();
         ArrayList<File> rightSpace = files.get(space);

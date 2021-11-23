@@ -36,7 +36,7 @@ public class Start
             {
                 System.out.println("Welcome to estate management application. " +
                         "Choose who are you, from provided list, by pressing" +
-                        "the right number. Type 'exit' to terminate." + '\n');
+                        " the right number. Type 'exit' to terminate." + '\n');
 
                 for (var person : peopleList)
                 {
@@ -1156,6 +1156,5 @@ public class Start
     }
 
  */
-
 
 }

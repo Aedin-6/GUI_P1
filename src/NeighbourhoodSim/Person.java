@@ -89,6 +89,8 @@ public class Person implements Serializable
             apartment.rentDate = LocalDate.now();
             apartment.dueDate = apartment.rentDate.plusDays(30);
             this.rentedList.add(apartment);
+            if(address == null)
+                address = apartment.address;
         }
         if(parkingSpot != null)
         {
